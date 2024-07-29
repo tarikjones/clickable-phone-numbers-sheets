@@ -17,7 +17,7 @@ chrome.action.onClicked.addListener((tab) => {
         let phoneCell = cells[phoneColumnIndex];
         let phoneNumber = phoneCell.textContent.replace(/[^\d]/g, "");
         if (phoneNumber) {
-          phoneCell.innerHTML = `<a href="tel:${phoneNumber}">${phoneCell.textContent}</a>`;
+          phoneCell.innerHTML = `=HYPERLINK("tel:${phoneNumber}", "${phoneNumber}")`;
         }
       }
     });
