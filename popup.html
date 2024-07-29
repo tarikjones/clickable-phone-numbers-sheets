@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clickable Phone Numbers</title>
+  <style>
+    body {
+      width: 200px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <button id="makeClickable">Make Phone Numbers Clickable</button>
+  <script>
+    document.getElementById('makeClickable').addEventListener('click', () => {
+      chrome.scripting.executeScript({
+        target: { allFrames: true },
+        function: makePhoneNumbersClickable
+      });
+    });
+
+    function makePhoneNumbersClickable() {
+      let phoneColumnIndex = 4; // E column is index 4 (zero-based index)
+      let sheet = document.querySelector('.waffle');
+      if (!sheet) return;
+
+      let rows = sheet.querySelectorAll('tr');
+      rows.forEach(row => {
+        let cells = row.querySelectorAll('td');
+        if (cells.length > phoneColumnIndex) {
+          let phoneCell = cells[phoneColumnIndex];
+          let phoneNumber = phoneCell.textContent.replace(/[^\d]/g, "");
+          if (phoneNumber) {
+            phoneCell.innerHTML = `<a href="tel:${phoneNumber}">${phoneCell.textContent}</a>`;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
